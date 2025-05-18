@@ -30,7 +30,7 @@
 <label for="Foto" class="form-label">Foto zagadki</label>
 <div id="Foto" class="d-flex flex-wrap" style="margin: auto">
   {% for manifestImage in user.images %}
-  {% if manifestImage.src %}
+  {% if manifestImage.src|default(false) %}
   <div class="card m-2 p-2 bg-light" style="width:220px;">
     <img class="rounded mb-2" style="width: 200px; margin: auto" src="{{ url_for('users.image',{'id':user.id,'imageId':manifestImage.id})|escape('html_attr') }}">
     <sup>[{{manifestImage.id}}]</sup>
