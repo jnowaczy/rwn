@@ -10,6 +10,20 @@
 </p>
 <hr>
 
+<span id="test" style="white-space: nowrap;visibility:hidden;position:absolute;top:0"></span>
+<script>
+function resizeInput(element){
+  const testElem=document.getElementById('test');
+  const minText='x';
+  testElem.innerText=minText.repeat(element.getAttribute('data-autolen'));
+  const minLen=testElem.offsetWidth;
+
+  testElem.innerText=element.value;
+  element.style.width=(20+Math.max(testElem.offsetWidth, minLen)) +'px';
+  testElem.innerText=''
+}
+</script>
+
 <form>
 
 <p>
@@ -17,7 +31,7 @@
 {% if chunk.type == 'text' %}
 {{chunk.text}}
 {% else %}
-<input type="text" name="solution_{{user.id ~ '_' ~ chunk.id}}" style="width:{{chunk.size}}rem; border:none;border-bottom:dotted">
+  <input data-autolen="{{ min(25, max(5,chunk.size))}}" onchange="resizeInput(this)" onkeyup="resizeInput(this)" style="border:none;border-bottom:dotted">
 <sup>[{{chunk.id}}]</sup>
 {% endif %}
 {% endfor %}
@@ -44,4 +58,15 @@
 </form>
 
 </div>
+
+
+
+<script>
+  for(const element of document.getElementsByTagName('input')){
+    if(element.getAttribute('data-autolen')){
+      resizeInput(element);
+    }
+  }
+</script>
+
 {% endblock %}
