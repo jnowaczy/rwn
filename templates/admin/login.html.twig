@@ -1,0 +1,35 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+
+<div class="container">
+    <h2>
+        Panel administracyjny
+    </h2>
+    {%if error is defined %}
+    <div class="alert alert-danger m-3" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <div class="card m-auto mt-3" style="width: 18rem;">
+        <div class="card-header">
+            Logowanie
+        </div>
+        <div class="card-body p-2">
+
+
+            <form method="post" action="{{ url_for('admin.login')|escape('html_attr') }}">
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="xxxxx"
+                        required>
+                    <label for="password"><i c lass="fa-solid fa-key"></i> Hasło</label>
+                </div>
+
+                <button class="btn btn-primary w-100 py-2" type="submit">Zaloguj się</button>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

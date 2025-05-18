@@ -1,0 +1,15 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+<div class="container">
+  <h2>{{user.name}} - kasowanie drużyny</h2>
+  
+  <b>Czy na pewno chcesz NIEODWRACALNIE skasować drużynę "{{user.name}}", jej trasę wynik i inne powiązane dane?</b>
+  
+  <a href="{{url_for('admin.user.list')}}" class="btn btn-primary">Anuluj</a>
+  <form method="post">
+    <button type="submit" value="delete" class="btn btn-danger">Skasuj</button>
+  </form>
+
+</div>
+{% endblock %}

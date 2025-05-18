@@ -1,0 +1,54 @@
+{% extends "layout/base.html.twig" %}
+{% block top %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+
+<div class="container">
+  <h3>Hej {{ user.name }}!</h3>
+
+  <p class="mb-3 pb-3" style="border-bottom-style: solid; border-bottom-width: 2px;">
+
+    <img style="width: 10rem; height: 10rem;" align=right src="{{ qrCode|escape('html_attr') }}">
+
+    {{ commonData.manifestHeader|nl2br}}
+
+    <br clear="both"/>
+  </p>
+
+
+  <p>
+    {% for chunk in user.manifestChunks %}
+    {% if chunk.type == 'text' %}
+    {{chunk.text}}
+    {% else %}
+    <span style="width:{{chunk.size}}rem; border:none;border-bottom:dotted;display: inline-block">&nbsp;</span>
+    <sup>[{{chunk.id}}]</sup>
+    {% endif %}
+    {% endfor %}
+  </p>
+
+  <p>
+    {{ commonData.manifestFooter|nl2br}}
+  </p>
+
+  <p style="page-break-before: always;">
+{#    <label for="Foto" class="form-label">Foto zagadki</label> #}
+  <div id="Foto" class="d-flex flex-wrap" style="margin: auto">
+    {% for manifestImage in user.images %}
+    {% if manifestImage.src|default(false) %}
+    <div class="card m-2 p-2" >
+      <img class="rounded" style="width: 200px; margin-left: auto;"
+      src="{{ url_for('users.image',{'id':user.id,'imageId':manifestImage.id})|escape('html_attr') }}">
+      
+        <div style="clear:both">
+          <sup>[{{manifestImage.id}}]</sup> 
+        </div>
+        <div style="padding-top:50px;border:none;border-bottom:dotted;">&nbsp;</div>      
+      </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  </p>
+</div>
+
+{% endblock %}

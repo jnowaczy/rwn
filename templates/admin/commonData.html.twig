@@ -1,0 +1,52 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+
+<form class="p-3" method="post" enctype="multipart/form-data">
+
+<div class="mb-3">
+  <label for="Input0" class="form-label">Nazwa rajdu</label>
+  <input class="form-control" id="Input0" name="title" placeholder="Rajd W Nieznane 20??" value="{{ commonData.title|escape('html_attr') }}" minlength="3" required>
+</div>
+<div class="mb-3">
+  <label for="Input1" class="form-label">Organizator</label>
+  <input class="form-control" id="Input1" name="creator" placeholder="Nazwa drużyny organizującej" value="{{ commonData.creator|escape('html_attr') }}">
+</div>
+<div class="mb-3">
+  <label for="Textarea1" class="form-label">Nagłówek manifestu (tekst przed opisem trasy)</label>
+  <textarea class="form-control" name="manifestHeader" id="Textarea1" rows="5">{{ commonData.manifestHeader }}</textarea>
+</div>
+<div class="mb-3">
+  <label for="Textarea2" class="form-label">Stopka manifestu (tekst za opisem trasy)</label>
+  <textarea class="form-control" name="manifestFooter" id="Textarea2" rows="5">{{ commonData.manifestFooter }}</textarea>
+</div>
+
+<div class="mb-3">
+  <label for="Textarea3" class="form-label">Punktowane zadania (nazwa zadania, po jednej w linii)</label>
+  <textarea class="form-control" name="additionalTasks" id="Textarea3" rows="5">{{ commonData.additionalTasks|join("\n") }}</textarea>
+</div>
+
+<div class="mb-3">
+  <label for="Input3" class="form-label">Liczba foto-zagadek (maksymalna)</label>
+  <input class="form-control" id="Input3" name="fotoCount" type="number" min="0" value="{{ commonData.fotoCount|escape('html_attr') }}" required>
+</div>
+
+<button class="btn btn-warning" id="PasswordChangeBtn" 
+  onclick="document.getElementById('PasswordChange').style.display='block';document.getElementById('PasswordChangeBtn').style.display='none';return false">
+  Ustaw nowe hasło panelu administratora
+</button>
+
+
+<div style="display:none" class="mb-3" id="PasswordChange">
+  <label for="PasswordChange" class="form-label">Nowe hasło panelu administratora</label>
+  <input type="password" class="form-control" id="PasswordChange" name="password" minlength="3">
+</div>
+
+
+<div class="card my-3">
+  <button type="submit" class="btn btn-primary">Zapisz</button>
+</div>
+
+</form>
+
+{% endblock %}

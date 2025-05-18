@@ -1,0 +1,20 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+<div class="container">
+
+  <h2>
+    Panel administracyjny
+  </h2>
+  
+  <ul>
+    <li>
+      <a href="{{ url_for('admin.users.list') }}">Lista drużyn</a>
+    </li>
+    <li>
+      <a href="{{ url_for('admin.commonData') }}">Ustawienia</a>
+    </li>
+  </ul>
+  
+</div>
+{% endblock %}

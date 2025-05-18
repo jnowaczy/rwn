@@ -1,0 +1,58 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+<div class="container">
+  <h2>Edycja drużyny</h2>
+
+  <form class="p-3" method="post" enctype="multipart/form-data">
+
+    <div class="mb-3">
+      <label for="Input0" class="form-label">Nazwa drużyny</label>
+      <input class="form-control" id="Input0" name="name" placeholder="Nazwa"
+        value="{{ user.name|escape('html_attr') }}" minlength="3" required>
+    </div>
+    <div class="mb-3">
+      <label for="Input1" class="form-label">Status (notatka o stopniu zawansowanie)</label>
+      <input class="form-control" id="Input1" name="status" placeholder="opis w przygotowaniu"
+        value="{{ user.status|escape('html_attr') }}">
+    </div>
+    <div class="mb-3">
+      <label for="Input2" class="form-label">Kontakt</label>
+      <input class="form-control" id="Input2" name="info" placeholder="Telefon, email"
+        value="{{ user.info|escape('html_attr') }}">
+    </div>
+    <div class="mb-3">
+      <label for="Input3" class="form-label">Autor trasy</label>
+      <input class="form-control" id="Input3" name="author" placeholder="Imie"
+        value="{{ user.author|escape('html_attr') }}">
+    </div>
+    <div class="mb-3">
+      <label for="Textarea1" class="form-label">Opis trasy (fragment do uzupełnienia przez drużynę zapisz nawiasach
+        kwadratowych, np: "pomnik bitwy z [1410] roku")</label>
+      <textarea class="form-control" name="manifest" id="Textarea1" rows="10">{{ user.manifest }}</textarea>
+    </div>
+
+    <label for="Foto" class="form-label">Foto zagadki</label>
+    <div id="Foto" class="d-flex flex-wrap" style="margin: auto">
+      {% for manifestImage in user.images %}
+      <div class="card m-2 p-2 bg-light" style="width:220px;">
+        <img id="image_{{ manifestImage.id }}_preview" class="rounded mb-2"
+          style="width: 200px; height: 200px;margin: auto"
+          src="{{ url_for('users.image',{'id':user.id,'imageId':manifestImage.id})|escape('html_attr') }}">
+        <input name="image_{{ manifestImage.id }}_solution" class="form-control" placeholder="Rozwiązanie"
+          value="{{ manifestImage.solution|escape('html_attr') }}">
+        <input class="form-control form-control-sm mt-2" name="image_{{ manifestImage.id }}_file" type="file"
+          onchange="let reader=new FileReader();reader.onload = function() {document.getElementById('image_{{ manifestImage.id }}_preview').setAttribute('src',reader.result)}; reader.readAsDataURL(this.files[0])">
+      </div>
+      {% endfor %}
+    </div>
+
+
+    <div class="card my-3">
+      <button type="submit" class="btn btn-primary">Zapisz</button>
+    </div>
+
+  </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+<div class="container">
+  <h2>Lista drużyn</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nazwa</th>
+        <th scope="col">Kontakt</th>
+        <th scope="col">Punkty</th>
+        <th scope="col">Statatus manifestu</th>
+        <th scope="col">Akcje</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in list %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ item.name }}</td>
+        <td>{{ item.info }}</td>
+        <td>{{ item.points }}</td>
+        <td>{{ item.status }}</td>
+        <td>
+          <a href="{{ url_for('admin.users.score', {'id':item.id}) }}">wynik</a>
+          |
+          <a href="{{ url_for('admin.users.edit', {'id':item.id}) }}">edycja</a>
+          |
+          <a href="{{ url_for('users.print', {'id':item.id}) }}">druk</a>
+          |
+          <a href="{{ url_for('users.play', {'id':item.id}) }}">gra</a>
+        </td>
+      </tr>
+      {% endfor %}
+      
+    </tbody>
+  </table>
+  
+  <div>
+    <a class="m-4 btn btn-primary" href="{{ url_for('admin.users.edit', {'id':'new'}) }}">Dodaj drużynę</a>
+  </div>
+</div>
+{% endblock %}

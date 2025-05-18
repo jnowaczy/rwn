@@ -1,0 +1,98 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+<div class="container">
+  <h2>{{user.name}} - wynik</h2>
+  <form method="post">
+
+    <table class="table table-auto">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Zadanie</th>
+          <th scope="col">Punkty za zadanie</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for other in commonData.additionalTasks %}
+
+        <tr>
+          <td>{{loop.index}}</td>
+          <td>{{other}}</td>
+          <td>
+            <input type="number" min="0" name="other_{{loop.index}}"
+              value="{{user.score['other_' ~ loop.index]|default('')}}" autocomplete="off">
+          </td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+          <td colspan="3">&nbsp;</td>
+        </tr>
+      </tbody>
+
+
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Poprawny fragment opisu trasy</th>
+          <th scope="col">Punkty za opis</th>
+        </tr>
+      </thead>
+      <tbody>
+
+
+
+        {% for chunk in user.manifestChunks %}
+        {% if chunk.type != 'text' %}
+        <tr>
+          <td>{{chunk.id}}</td>
+          <td>{{chunk.text}}</td>
+          <td>
+            <input type="number" min="0" name="manifest_{{chunk.id}}"
+              value="{{user.score['manifest_' ~ chunk.id]|default('')}}" autocomplete="off">
+          </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+
+        <tr>
+          <td colspan="3">&nbsp;</td>
+        </tr>
+      </tbody>
+
+
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Poprawny opis foto-zagadki</th>
+          <th scope="col">Punkty za foto-zagadkę</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for manifestImage in user.images %}
+        {% if manifestImage.src|default(false) %}
+        <tr>
+          <td>{{manifestImage.id}}</td>
+          <td>{{manifestImage.solution}}</td>
+          <td>
+            <input type="number" min="0" name="image_{{manifestImage.id}}"
+              value="{{user.score['image_' ~ manifestImage.id]|default('')}}" autocomplete="off">
+          </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+
+
+    </table>
+
+    <div class="card my-3">
+      <button type="submit" class="btn btn-primary">Zapisz</button>
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}
