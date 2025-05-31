@@ -18,6 +18,7 @@ class WriteUserAction extends AdminUserAction
         $data = $user->getData();
         $data['name'] = $form['name'];
         $data['info'] = $form['info'];
+        $data['author'] = $form['author'];
         $data['status'] = $form['status'];
         $data['manifest'] = $form['manifest'];
 
