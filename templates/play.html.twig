@@ -2,71 +2,172 @@
 
 {% block content %}
 
-<div class="container">
-<h3>Hej {{ user.name }}!</h3>
+<div class="container" id="play">
+  <form id="solutionForm">
+    <h3>Hej {{ user.name }}!</h3>
 
-<p>
-  {{ commonData.manifestHeader|nl2br}}
-</p>
-<hr>
+    <p>
+      {{ commonData.manifestHeader|nl2br}}
+    </p>
+    <p>Opiekun trasy: {{ user.author }}</p>
+    <hr>
 
-<span id="test" style="white-space: nowrap;visibility:hidden;position:absolute;top:0"></span>
+    <span id="test" style="white-space: nowrap;visibility:hidden;position:absolute;top:0"></span>
+
+
+
+    <p>
+      {% for chunk in user.manifestChunks %}
+      {% if chunk.type == 'text' %}
+      {{chunk.text}}
+      {% else %}
+      <input name="manifest_{{user.id ~ '_' ~ chunk.id}}_solution" data-confirm="manifest_{{chunk.id}}_confirm"
+        data-autolen="{{ min(25, max(5,chunk.size))}}" onchange="resizeInput(this)" onkeyup="resizeInput(this)"
+        style="border:none;border-bottom:dotted">
+      <sup>[{{chunk.id}}]</sup>
+      {% endif %}
+      {% endfor %}
+    </p>
+
+    <p>
+      {{ commonData.manifestFooter|nl2br}}
+    </p>
+
+    <hr>
+
+    <label for="Foto" class="form-label">Foto zagadki</label>
+    <div id="Foto" class="d-flex flex-wrap" style="margin: auto">
+      {% for manifestImage in user.images %}
+      {% if manifestImage.src|default(false) %}
+      <div class="card m-2 p-2 bg-light">
+        <img class="rounded mb-2 ml-auto" width="250"
+          src="{{ url_for('users.image',{'id':user.id,'imageId':manifestImage.id})|escape('html_attr') }}">
+          <sup class="text-end m-1">[{{manifestImage.id}}]</sup>
+        <textarea data-confirm="image_{{manifestImage.id}}_confirm"
+          name="image_{{ user.id ~ '_' ~ manifestImage.id }}_solution" class="form-control"
+          placeholder="Rozwiązanie"></textarea>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+  </form>
+
+  <div class="card bg-light p-2 mt-4">
+    Drogi użytkowniku aplikacji, prosimy Cię o przekazanie wypełnionego dokumentu (jednego dla drużyny) drogą
+    elektroniczną.
+    Bardzo ułatwi nam to przygotowanie wyników.
+    <button class="btn btn-primary mt-2" onclick="showConfirm()">Pokaż dokument do przekazania</button>
+  </div>
+</div>
+
+
+
+<div class="container" id="confirm" style="display: none;">
+  <h3>Odpowiedzi</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Uzupełniony fragment manifestu</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for chunk in user.manifestChunks %}
+      {% if chunk.type != 'text' %}
+      <tr>
+        <td>{{chunk.id}}</td>
+        <td>
+          <div id="manifest_{{chunk.id}}_confirm"></div>
+        </td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+    </tbody>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Lokalizacja zdjęcia</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for manifestImage in user.images %}
+      {% if manifestImage.src|default(false) %}
+      <td>{{manifestImage.id}}</td>
+      <td>
+        <div id="image_{{manifestImage.id}}_confirm"></div>
+      </td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+    <div class="card bg-warning p-2 mt-4">
+    Sprawdź wszystkie odpowiedzi i kliknij "Przekaż"- możesz to zrobić tylko raz. 
+    <br/>Papierowy dokument przekaż organizatorom wraz z gagdetem bezpieczeństwa, zaznaczając by punkty przyznali za treść elektroniczną.  
+    <div class="btn-group" role="group" >
+
+      <button class="btn btn-primary mt-2" onclick="hideConfirm()">Popraw</button>
+      <button class="btn btn-danger mt-2" onclick="submitForm()">Przekaż</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <script>
-function resizeInput(element){
-  const testElem=document.getElementById('test');
-  const minText='x';
-  testElem.innerText=minText.repeat(element.getAttribute('data-autolen'));
-  const minLen=testElem.offsetWidth;
 
-  testElem.innerText=element.value;
-  element.style.width=(20+Math.max(testElem.offsetWidth, minLen)) +'px';
-  testElem.innerText=''
-}
-</script>
+  function resizeInput(element) {
+    const testElem = document.getElementById('test');
+    const minText = 'x';
+    testElem.innerText = minText.repeat(element.getAttribute('data-autolen'));
+    const minLen = testElem.offsetWidth;
 
-<form>
+    testElem.innerText = element.value;
+    element.style.width = (20 + Math.max(testElem.offsetWidth, minLen)) + 'px';
+    testElem.innerText = ''
+  }
 
-<p>
-{% for chunk in user.manifestChunks %}
-{% if chunk.type == 'text' %}
-{{chunk.text}}
-{% else %}
-  <input data-autolen="{{ min(25, max(5,chunk.size))}}" onchange="resizeInput(this)" onkeyup="resizeInput(this)" style="border:none;border-bottom:dotted">
-<sup>[{{chunk.id}}]</sup>
-{% endif %}
-{% endfor %}
-</p>
+  function showConfirm() {
+    for (const tag in ['input', 'textarea']) {
+      for (const element of document.getElementsByTagName(tag)) {
+        if (element.getAttribute('data-confirm')) {
+          const confirmationElement = element.getAttribute('data-confirm');
+          document.getElementById(confirmationElement).innerText = element.value
+        }
+      }
+    }
+    document.getElementById('play').style.display='none'
+    document.getElementById('confirm').style.display=''
+  }
 
-<p>
-  {{ commonData.manifestFooter|nl2br}}
-</p>
+  function hideConfirm() {
+    document.getElementById('play').style.display=''
+    document.getElementById('confirm').style.display='none'
+   
+  }
 
-<label for="Foto" class="form-label">Foto zagadki</label>
-<div id="Foto" class="d-flex flex-wrap" style="margin: auto">
-  {% for manifestImage in user.images %}
-  {% if manifestImage.src|default(false) %}
-  <div class="card m-2 p-2 bg-light" style="width:220px;">
-    <img class="rounded mb-2" style="width: 200px; margin: auto" src="{{ url_for('users.image',{'id':user.id,'imageId':manifestImage.id})|escape('html_attr') }}">
-    <sup>[{{manifestImage.id}}]</sup>
-    <textarea name="image_{{ user.id ~ '_' ~ manifestImage.id }}_solution" class="form-control" placeholder="Rozwiązanie"></textarea>
-  </div> 
-  {% endif %}
-  {% endfor %}
-</div>
-</div>
+  async function submitForm() {
+    const formData = new FormData(document.getElementById('solutionForm'));
+  
+    const response = await fetch("", {
+      method: "POST",
+      body: formData,
+    });
+    console.log(await response.json());
+  }
 
-</form>
-
-</div>
-
-
-
-<script>
-  for(const element of document.getElementsByTagName('input')){
-    if(element.getAttribute('data-autolen')){
-      resizeInput(element);
+  function init(){
+    for (const element of document.getElementsByTagName('input')) {
+      if (element.getAttribute('data-autolen')) {
+        resizeInput(element);
+      }
     }
   }
+  init();
 </script>
-
 {% endblock %}
