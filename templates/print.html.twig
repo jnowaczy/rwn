@@ -22,7 +22,7 @@
     {% if chunk.type == 'text' %}
     {{chunk.text}}
     {% else %}
-    <span style="width:{{ max(3, min(15, 0.5 * chunk.size)) }}rem; border:none;border-bottom:dotted;display: inline-block">&nbsp;</span>
+        <span style="border:none;border-bottom:dotted black;color:white;white-space: pre-wrap;">{% for i in range(0,min(100,max(3,chunk.size))) %}. {% endfor %}</span>
     <sup>[{{chunk.id}}]</sup>
     {% endif %}
     {% endfor %}
