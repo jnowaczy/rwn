@@ -30,6 +30,8 @@
           <a href="{{ url_for('users.print', {'id':item.id}) }}">druk</a>
           |
           <a href="{{ url_for('users.play', {'id':item.id}) }}">gra</a>
+          |
+          <a href="{{ url_for('admin.users.delete', {'id':item.id}) }}" style="color:red">skasuj</a>
         </td>
       </tr>
       {% endfor %}

@@ -6,15 +6,18 @@ namespace App\Application\Actions\Admin\User;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-class EditUserAction extends AdminUserAction
+class DeleteUserAction extends AdminUserAction
 {
     protected function action(): Response
     {
         $userId = $this->resolveArg('id');
         $user = $this->userRepository->findUserOfId($userId);
 
-        $this->logger->info("User '{$user->getName()}' was viewed.");
+        if($this->request->getMethod()==='POST'){
+            $user->deleteDataDir();
+            return $this->respondWithRedirect('admin.users.list');
+        }
 
-        return $this->respondWithHtml('admin/users.edit.html.twig',['user'=>$user]);
+        return $this->respondWithHtml('admin/users.delete.html.twig',['user'=>$user]);
     }
 }

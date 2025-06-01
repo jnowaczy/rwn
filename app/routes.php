@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Application\Actions\Admin\AdminCommonDataAction;
 use Slim\App;
-
 use App\Application\Actions\StartAction;
+
 use App\Application\Actions\User\PlayAction;
 use App\Application\Actions\User\PrintAction;
 use App\Application\Middleware\AdminMiddleware;
@@ -17,6 +16,8 @@ use App\Application\Actions\Admin\AdminDashboardAction;
 use App\Application\Actions\Admin\User\ListUsersAction;
 use App\Application\Actions\Admin\User\ScoreUserAction;
 use App\Application\Actions\Admin\User\WriteUserAction;
+use App\Application\Actions\Admin\AdminCommonDataAction;
+use App\Application\Actions\Admin\User\DeleteUserAction;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
@@ -45,6 +46,7 @@ return function (App $app) {
             $group->get('/{id}/edit', EditUserAction::class)->setName('admin.users.edit');
             $group->post('/{id}/edit', WriteUserAction::class)->setName('admin.users.write');
             $group->map(['GET','POST'],'/{id}/score', ScoreUserAction::class)->setName('admin.users.score');
+            $group->map(['GET','POST'],'/{id}/delete', DeleteUserAction::class)->setName('admin.users.delete');
         });
     })->addMiddleware(new AdminMiddleware('admin.login'));
 };

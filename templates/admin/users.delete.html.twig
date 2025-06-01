@@ -4,12 +4,19 @@
 <div class="container">
   <h2>{{user.name}} - kasowanie drużyny</h2>
   
-  <b>Czy na pewno chcesz NIEODWRACALNIE skasować drużynę "{{user.name}}", jej trasę wynik i inne powiązane dane?</b>
-  
-  <a href="{{url_for('admin.user.list')}}" class="btn btn-primary">Anuluj</a>
+  <p class="p-4">
+
+    UWAGA: Czy na pewno chcesz <span class="bg-danger">NIEODWRACALNIE
+      skasować</span> drużynę "{{user.name}}", jej trasę wynik i inne powiązane dane?
+    </p>
+      
+
   <form method="post">
-    <button type="submit" value="delete" class="btn btn-danger">Skasuj</button>
-  </form>
+      <div class="btn-group" role="group" > 
+        <a href="{{url_for('admin.users.list')}}" class="btn btn-primary">Anuluj</a>
+      <button type="submit" value="delete" class="btn btn-danger">Skasuj</button>
+    </div>
+    </form>
 
 </div>
 {% endblock %}

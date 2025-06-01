@@ -23,7 +23,7 @@ class InMemoryUserRepository implements UserRepository
         $this->dataPath = $dataPath ?? implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 4), 'var', 'data', 'teams']);
 
         foreach (new DirectoryIterator($this->dataPath) as $item) {
-            if ($item->isDir() && !$item->isDot()) {
+            if ($item->isDir() && !$item->isDot() && $item->getExtension()!='deleted') {
                 $user = new User($item->getFilename(), $item->getPathname());
                 $this->users[$user->getId()] = $user;
             }

@@ -19,6 +19,11 @@ class User implements JsonSerializable
         $this->dataFilePath = $this->dataPath . DIRECTORY_SEPARATOR . 'data.json';
     }
 
+    public function deleteDataDir(): void
+    {
+        rename($this->dataPath, $this->dataPath . '.deleted');
+    }
+
 
     public function getData(): array
     {
@@ -38,7 +43,7 @@ class User implements JsonSerializable
     {
         $this->data = $data;
         $contents = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
-        
+
         $this->prepareDataDir();
         file_put_contents($this->dataFilePath, $contents);
     }
@@ -86,14 +91,14 @@ class User implements JsonSerializable
 
     public function getImages(): array
     {
-        $commonData=new CommonData;
+        $commonData = new CommonData;
         $images = [];
         for ($i = 1; $i <= $commonData->getFotoCount(); ++$i) {
-            $images['image_'.$i] = ['id' => $i, 'src' => 'zagadka.png', 'solution' => '', 'exif' => []];
+            $images['image_' . $i] = ['id' => $i, 'src' => 'zagadka.png', 'solution' => '', 'exif' => []];
         }
 
-        foreach($this->getData()['images']??[] as $img){
-            $images['image_'.$img['id']]=$img;
+        foreach ($this->getData()['images'] ?? [] as $img) {
+            $images['image_' . $img['id']] = $img;
         }
 
         return $images;
@@ -104,60 +109,60 @@ class User implements JsonSerializable
         $this->prepareDataDir();
         $temp = $this->dataPath . DIRECTORY_SEPARATOR . 'image_tmp';
         $file->moveTo($temp);
-        $sha1=sha1_file($temp);
-        $ext=preg_replace('/^.*\./','',$file->getClientFilename());
-        $imageFile=$this->dataPath . DIRECTORY_SEPARATOR . 'image_'.substr($sha1, 0, 16).'.'.$ext;
-        rename($temp,$imageFile);
+        $sha1 = sha1_file($temp);
+        $ext = preg_replace('/^.*\./', '', $file->getClientFilename());
+        $imageFile = $this->dataPath . DIRECTORY_SEPARATOR . 'image_' . substr($sha1, 0, 16) . '.' . $ext;
+        rename($temp, $imageFile);
         return $imageFile;
     }
 
-    private function prepareDataDir():void
+    private function prepareDataDir(): void
     {
-        if(!is_dir($this->dataPath)){
+        if (!is_dir($this->dataPath)) {
             mkdir($this->dataPath);
         }
     }
 
     function getManifestChunks(): array
     {
-        $manifest=$this->getManifest();
+        $manifest = $this->getManifest();
         $len = strlen($manifest);
 
-        $mode=']';
-        $output=[];
-        $current='';
-        $escape=false;
-        $num=1;
+        $mode = ']';
+        $output = [];
+        $current = '';
+        $escape = false;
+        $num = 1;
         for ($i = 0; $i < $len; ++$i) {
             $char = $manifest[$i];
-            if($escape){
-                $escape=false;
+            if ($escape) {
+                $escape = false;
                 continue;
             }
 
-            if($char=='\\'){
-                $escape=true;
+            if ($char == '\\') {
+                $escape = true;
                 continue;
             }
 
 
-            if($char=='[' || $char==']' || $i == $len-1){
-                if($mode!==$char){
-                    $chunk=[
-                        'type'=>$mode==']'?'text':'solution',
-                        'text'=>$current
+            if ($char == '[' || $char == ']' || $i == $len - 1) {
+                if ($mode !== $char) {
+                    $chunk = [
+                        'type' => $mode == ']' ? 'text' : 'solution',
+                        'text' => $current
                     ];
-                    if($chunk['type']=='solution'){
-                        $chunk['size']=max(5,mb_strlen($current));
-                        $chunk['id']=$num++;
+                    if ($chunk['type'] == 'solution') {
+                        $chunk['size'] = max(5, mb_strlen($current));
+                        $chunk['id'] = $num++;
                     }
-                    $output[]=$chunk;
-                    $current='';
-                    $mode=$char;
+                    $output[] = $chunk;
+                    $current = '';
+                    $mode = $char;
                 }
                 continue;
             }
-            $current.=$char;
+            $current .= $char;
         }
 
         return $output;
