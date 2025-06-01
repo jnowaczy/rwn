@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use Slim\App;
 use App\Application\Actions\StartAction;
-
 use App\Application\Actions\User\PlayAction;
 use App\Application\Actions\User\PrintAction;
 use App\Application\Middleware\AdminMiddleware;
+use App\Application\Actions\User\PlayDoneAction;
 use App\Application\Actions\User\ImageUserAction;
 use App\Application\Actions\Admin\AdminLoginAction;
 use App\Application\Actions\Admin\AdminLogoutAction;
@@ -30,6 +30,8 @@ return function (App $app) {
 
     
     $app->get('/{id}/play', PlayAction::class)->setName('users.play');
+    $app->post('/{id}/play', PlayDoneAction::class)->setName('users.play.done');
+    
     $app->get('/{id}/print', PrintAction::class)->setName('users.print');
     $app->get('/{id}/images/{imageId}', ImageUserAction::class)->setName('users.image');
 

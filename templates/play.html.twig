@@ -104,10 +104,14 @@
     </tbody>
   </table>
 
-    <div class="card bg-warning p-2 mt-4">
-    Sprawdź wszystkie odpowiedzi i kliknij "Przekaż"- możesz to zrobić tylko raz. 
+  <p>
+    Sprawdź wszystkie odpowiedzi i kliknij "Przekaż"- <b>możesz to zrobić tylko raz</b>. 
     <br/>Papierowy dokument przekaż organizatorom wraz z gagdetem bezpieczeństwa, zaznaczając by punkty przyznali za treść elektroniczną.  
+  </p>
+    <div class="card bg-warning p-2 mt-4">
+    <div class="alert alert-danger" id="confirm-error" style="display: none;"></div>
     <div class="btn-group" role="group" >
+
 
       <button class="btn btn-primary mt-2" onclick="hideConfirm()">Popraw</button>
       <button class="btn btn-danger mt-2" onclick="submitForm()">Przekaż</button>
@@ -115,7 +119,13 @@
   </div>
 </div>
 
-
+<div class="container" id="done" style="display: none;">
+  <br/>
+  <br/>
+  <div id="doneAlert" class="alert"></div>
+  <br/>
+  <br/>
+</div>
 
 
 
@@ -133,8 +143,9 @@
   }
 
   function showConfirm() {
-    for (const tag in ['input', 'textarea']) {
-      for (const element of document.getElementsByTagName(tag)) {
+    const tagNames=['input', 'textarea']
+    for (const t in tagNames) {
+      for (const element of window.document.getElementsByTagName(tagNames[t])) {
         if (element.getAttribute('data-confirm')) {
           const confirmationElement = element.getAttribute('data-confirm');
           document.getElementById(confirmationElement).innerText = element.value
@@ -148,17 +159,33 @@
   function hideConfirm() {
     document.getElementById('play').style.display=''
     document.getElementById('confirm').style.display='none'
-   
   }
 
   async function submitForm() {
     const formData = new FormData(document.getElementById('solutionForm'));
+    const alert=document.getElementById('confirm-error')
+    alert.style.display=''
+    alert.innerText='wysyłam dane...'
   
-    const response = await fetch("", {
-      method: "POST",
-      body: formData,
-    });
-    console.log(await response.json());
+    try {
+      const response = await fetch("", {
+        method: "POST",
+        body: formData,
+      });
+      
+      const responseJson=await response.json();
+      if(responseJson.data.class){
+        document.getElementById('confirm').style.display='none'
+        document.getElementById('done').style.display=''
+        const doneAlert=document.getElementById('doneAlert')
+        doneAlert.innerText=responseJson.data.msg
+        doneAlert.className='alert alert-'+responseJson.data.class
+      }else{
+        alert.innerText='Wystąpił nieoczekiwany problem - spróbuj ponownie za chwilę'
+      }
+    }catch(err){
+      alert.innerText="Problem z komunikacją - sprawdź zasieg i spróbuj ponownie"
+    }
   }
 
   function init(){
