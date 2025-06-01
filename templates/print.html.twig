@@ -3,25 +3,26 @@
 {% block footer %}{% endblock %}
 {% block content %}
 
-<div class="container">
-  <h3>Hej {{ user.name }}!</h3>
-
-  <p class="mb-3 pb-3" style="border-bottom-style: solid; border-bottom-width: 2px;">
-
-    <img style="width: 10rem; height: 10rem;" align=right src="{{ qrCode|escape('html_attr') }}">
+{% if 'text' in print|default(['text','foto']) %}
+<div class="pageContainer">
+  <h3>Hej {{ user.name }}!
+  </h3>
+  
+  <p class="mb-3 pb-3">
+    <img style="width: 3cm; height: 3cm;float:inline-end;border:0.05cm solid black" src="{{ qrCode|escape('html_attr') }}">
 
     {{ commonData.manifestHeader|nl2br}}
-
-    <br clear="both"/>
+    <p>Autor trasy: {{ user.author }}</p>
   </p>
 
+  <hr>
 
   <p>
     {% for chunk in user.manifestChunks %}
     {% if chunk.type == 'text' %}
     {{chunk.text}}
     {% else %}
-    <span style="width:{{chunk.size}}rem; border:none;border-bottom:dotted;display: inline-block">&nbsp;</span>
+    <span style="width:{{ max(3, min(15, 0.5 * chunk.size)) }}rem; border:none;border-bottom:dotted;display: inline-block">&nbsp;</span>
     <sup>[{{chunk.id}}]</sup>
     {% endif %}
     {% endfor %}
@@ -30,25 +31,52 @@
   <p>
     {{ commonData.manifestFooter|nl2br}}
   </p>
+</div>
+{% endif %}
 
-  <p style="page-break-before: always;">
-{#    <label for="Foto" class="form-label">Foto zagadki</label> #}
-  <div id="Foto" class="d-flex flex-wrap" style="margin: auto">
+{% if 'foto' in print|default(['text','foto']) %}
+<div class="pageContainer">
+    <div class="d-flex flex-wrap justify-content-center" >
     {% for manifestImage in user.images %}
     {% if manifestImage.src|default(false) %}
-    <div class="card m-2 p-2" >
-      <img class="rounded" style="width: 200px; margin-left: auto;"
+    <div class="m-1 p-1 px-4" style="break-inside: avoid; border:1px solid #ccc">
+      <img class="rounded" style="width:6.5cm;"
       src="{{ url_for('users.image',{'id':user.id,'imageId':manifestImage.id})|escape('html_attr') }}">
       
-        <div style="clear:both">
-          <sup>[{{manifestImage.id}}]</sup> 
-        </div>
-        <div style="padding-top:50px;border:none;border-bottom:dotted;">&nbsp;</div>      
+        <div style="clear:both;border-bottom:dotted" class="text-end">[{{manifestImage.id}}]</div>
+        <div style="clear:both;border-bottom:dotted">&nbsp;</div>
+         
       </div>
     {% endif %}
     {% endfor %}
   </div>
-  </p>
 </div>
+{% endif %}
 
+
+{% endblock %}
+
+{% block head %}
+{{ parent() }}
+
+<script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+<style>
+@page {
+  size: A4;
+  margin: 10mm;
+  margin-left: 20mm;
+}
+
+
+@page {
+  @bottom-center {
+    color:#888;
+    content: "{{ user.name }} - strona " counter(page);
+  }
+}
+
+.pageContainer {
+    break-before: page;
+}
+</style>
 {% endblock %}
