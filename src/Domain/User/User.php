@@ -9,7 +9,6 @@ use Psr\Http\Message\UploadedFileInterface;
 
 class User implements JsonSerializable
 {
-    public const IMAGES = 12;
     protected string $id;
     protected string $dataFilePath;
     protected ?array $data = null;

@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace App\Application\Actions\Admin\User;
 
 use App\Domain\User\User;
-use Psr\Http\Message\ResponseInterface as Response;
+use App\Domain\User\CommonData;
 use Psr\Http\Message\UploadedFileInterface;
+use Psr\Http\Message\ResponseInterface as Response;
 
 class WriteUserAction extends AdminUserAction
 {
     protected function action(): Response
     {
+
+        $commonData=new CommonData;
+
         $userId = $this->resolveArg('id');
         $user = $this->userRepository->findUserOfId($userId);
         $form = $this->getFormData();
@@ -24,9 +28,9 @@ class WriteUserAction extends AdminUserAction
 
         $uploaded = $this->request->getUploadedFiles();
 
-        for ($i = 1; $i <= User::IMAGES; ++$i) {
+        for ($i = 1; $i <= $commonData->getFotoCount(); ++$i) {
             $data['images'][$i]['id'] = $i;
-            $data['images'][$i]['solution'] = $form['image_' . $i . '_solution'];
+            $data['images'][$i]['solution'] = $form['image_' . $i . '_solution']??'';
 
             $file = $uploaded['image_' . $i . '_file'] ?? null;
             if ($file instanceof UploadedFileInterface && $file->getSize()) {
