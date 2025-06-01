@@ -35,6 +35,8 @@ class WriteUserAction extends AdminUserAction
             $file = $uploaded['image_' . $i . '_file'] ?? null;
             if ($file instanceof UploadedFileInterface && $file->getSize()) {
                 $data['images'][$i]['src'] = $user->addImage($uploaded['image_' . $i . '_file']);
+            }elseif($form['image_' . $i . '_delete']??''){
+                unset($data['images'][$i]['src']);
             }
         }
         $user->setData($data);

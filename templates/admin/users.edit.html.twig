@@ -39,11 +39,13 @@
         <img id="image_{{ manifestImage.id }}_preview" class="rounded mb-2"
           style="width: 200px; height: 200px;margin: auto"
           src="{{ url_for('users.image',{'id':user.id,'imageId':manifestImage.id})|escape('html_attr') }}">
-        <input name="image_{{ manifestImage.id }}_solution" class="form-control" placeholder="Rozwiązanie"
+        <input id="image_{{ manifestImage.id }}_solution" name="image_{{ manifestImage.id }}_solution" class="form-control" placeholder="Rozwiązanie"
           value="{{ manifestImage.solution|escape('html_attr') }}">
-        <input class="form-control form-control-sm mt-2" name="image_{{ manifestImage.id }}_file" type="file"
-          onchange="let reader=new FileReader();reader.onload = function() {document.getElementById('image_{{ manifestImage.id }}_preview').setAttribute('src',reader.result)}; reader.readAsDataURL(this.files[0])">
-      </div>
+        <input id="image_{{ manifestImage.id }}_file" class="form-control form-control-sm mt-2" name="image_{{ manifestImage.id }}_file" type="file"
+          onchange="addImage(this.files[0],'{{ manifestImage.id }}')">
+        <button class="btn btn-danger" onclick="return deleteImage('{{ manifestImage.id }}')">Skasuj</button>
+        <input type="hidden" id="image_{{ manifestImage.id }}_delete" name="image_{{ manifestImage.id }}_delete">
+        </div>
       {% endfor %}
     </div>
 
@@ -55,4 +57,23 @@
   </form>
 
 </div>
+
+<script>
+  function addImage(file,num){
+    let reader=new FileReader();
+    reader.onload = function() {
+      document.getElementById('image_'+num+'_preview').setAttribute('src',reader.result)
+      
+    }; 
+    reader.readAsDataURL(file)
+  }
+
+  function deleteImage(num){
+    document.getElementById('image_'+num+'_preview').setAttribute('src', '{{ url_for('users.image',{'id':user.id,'imageId':'0'}) }}');
+    document.getElementById('image_'+num+'_solution').setAttribute('value','')
+    document.getElementById('image_'+num+'_delete').setAttribute('value','1')
+    document.getElementById('image_'+num+'_file').value=''
+    return false;
+  }
+</script>
 {% endblock %}
