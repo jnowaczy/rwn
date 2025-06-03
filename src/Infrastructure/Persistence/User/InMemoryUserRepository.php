@@ -34,11 +34,11 @@ class InMemoryUserRepository implements UserRepository
     public function findAll(): array
     {
         $users=[];
-        foreach($this->users as $id=>$user){
-            $users[$user->getName().' '.$user->getSection().' '.$id]=$user;
+        foreach($this->users as $user){
+            $users[$user->getName().' '.$user->getSection().' '.$user->getId()]=$user;
         }
         ksort($users);
-        return array_values($this->users);
+        return array_values($users);
     }
 
     public function findUserOfId(string $id): User
