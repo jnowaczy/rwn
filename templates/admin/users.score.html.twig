@@ -56,6 +56,14 @@
               value="{{user.score['manifest_' ~ chunk.id]|default('')}}" autocomplete="off">
           </td>
         </tr>
+        {% else %}
+        <tr>
+          <td></td>
+          <td class="text-secondary p-0 fs-6 fw-light">
+            {{chunk.text|trim(".  \n")}}</div>
+          </td>
+          <td></td>
+        </tr>
         {% endif %}
         {% endfor %}
 
