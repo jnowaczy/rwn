@@ -12,18 +12,23 @@
         value="{{ user.name|escape('html_attr') }}" minlength="3" required>
     </div>
     <div class="mb-3">
-      <label for="Input1" class="form-label">Status (notatka o stopniu zawansowanie)</label>
-      <input class="form-control" id="Input1" name="status" placeholder="opis w przygotowaniu"
+      <label for="Input1" class="form-label">Etap trasy (zostaw puste jeśli brak etapów)</label>
+      <input class="form-control" id="Input1" name="section" placeholder=""
+        value="{{ user.section|escape('html_attr') }}">
+    </div>
+    <div class="mb-3">
+      <label for="Input2" class="form-label">Status (notatka o stopniu zawansowanie)</label>
+      <input class="form-control" id="Input2" name="status" placeholder="opis w przygotowaniu"
         value="{{ user.status|escape('html_attr') }}">
     </div>
     <div class="mb-3">
-      <label for="Input2" class="form-label">Kontakt</label>
-      <input class="form-control" id="Input2" name="info" placeholder="Telefon, email"
+      <label for="Input3" class="form-label">Kontakt</label>
+      <input class="form-control" id="Input3" name="info" placeholder="Telefon, email"
         value="{{ user.info|escape('html_attr') }}">
     </div>
     <div class="mb-3">
-      <label for="Input3" class="form-label">Autor trasy</label>
-      <input class="form-control" id="Input3" name="author" placeholder="Imie"
+      <label for="Input4" class="form-label">Autor trasy</label>
+      <input class="form-control" id="Input4" name="author" placeholder="Imie"
         value="{{ user.author|escape('html_attr') }}">
     </div>
     <div class="mb-3">

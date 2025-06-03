@@ -18,7 +18,7 @@
       {% for item in list %}
       <tr>
         <th scope="row">{{ loop.index }}</th>
-        <td>{{ item.name }}</td>
+        <td>{{ item.name }}{% if item.section %} <i>(Etap: {{ item.section }})</i>{% endif %}</td>
         <td>{{ item.info }}</td>
         <td>{{ item.points }}</td>
         <td>{{ item.status }}</td>

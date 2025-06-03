@@ -20,11 +20,12 @@ class WriteUserAction extends AdminUserAction
         $user = $this->userRepository->findUserOfId($userId);
         $form = $this->getFormData();
         $data = $user->getData();
-        $data['name'] = $form['name'];
-        $data['info'] = $form['info'];
-        $data['author'] = $form['author'];
-        $data['status'] = $form['status'];
-        $data['manifest'] = $form['manifest'];
+        $data['name'] = trim($form['name']);
+        $data['section'] = trim($form['section']);
+        $data['info'] = trim($form['info']);
+        $data['author'] = trim($form['author']);
+        $data['status'] = trim($form['status']);
+        $data['manifest'] = trim($form['manifest']);
 
         $uploaded = $this->request->getUploadedFiles();
 

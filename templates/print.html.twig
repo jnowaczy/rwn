@@ -5,9 +5,8 @@
 
 {% if 'text' in print|default(['text','foto']) %}
 <div class="pageContainer">
-  <h3>Hej {{ user.name }}!
-  </h3>
-  
+  <h3>Hej {{ user.name }}!</h3>
+  {% if user.section %}<p>Etap: {{ user.section }}</p>{% endif %} 
   <p class="mb-3 pb-3">
     <img style="width: 3cm; height: 3cm;float:inline-end;border:0.05cm solid black" src="{{ qrCode|escape('html_attr') }}">
 
@@ -26,7 +25,6 @@
       <!--
          <span style="border:none;border-bottom:dotted black;color:white;white-space: pre-wrap;">{% for i in range(0,min(100,max(3,chunk.size))) %}. .{% endfor %}</span><sup>[{{chunk.id}}]</sup>
        -->  
-    
     {% endif %}
     {% endfor %}
   </p>

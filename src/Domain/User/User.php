@@ -63,6 +63,10 @@ class User implements JsonSerializable
         return $this->getData()['info'] ?? '';
     }
 
+    public function getSection(): string
+    {
+        return $this->getData()['section'] ?? '';
+    }
 
     public function getStatus(): string
     {
