@@ -125,7 +125,7 @@ class User implements JsonSerializable
 
     function getManifestChunks(): array
     {
-        $manifest = $this->getManifest();
+        $manifest = $this->getManifest().' ';
         $len = strlen($manifest);
 
         $mode = ']';
