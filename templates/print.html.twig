@@ -20,7 +20,7 @@
   <p>
     {% for chunk in user.manifestChunks %}
     {% if chunk.type == 'text' %}
-    {{chunk.text}}
+    {{chunk.text|nl2br}}
     {% else %}
         <span style="border:none;border-bottom:dotted black;color:white;white-space: pre-wrap;">{% for i in range(0,min(100,max(3,chunk.size))) %}. {% endfor %}</span>
     <sup>[{{chunk.id}}]</sup>
@@ -76,6 +76,9 @@
 
 .pageContainer {
     break-before: page;
+}
+:root{
+  --bs-body-line-height:2.0;
 }
 </style>
 {% endblock %}
