@@ -21,7 +21,7 @@
       {% if chunk.type == 'text' %}
       {{chunk.text}}
       {% else %}
-      <input name="manifest_{{user.id ~ '_' ~ chunk.id}}_solution" data-confirm="manifest_{{chunk.id}}_confirm"
+      <input name="manifest_{{user.id ~ '_' ~ chunk.id}}" data-confirm="manifest_{{chunk.id}}_confirm"
         data-autolen="{{ min(25, max(5,chunk.size))}}" onchange="resizeInput(this)" onkeyup="resizeInput(this)"
         style="border:none;border-bottom:dotted">
       <sup>[{{chunk.id}}]</sup>
@@ -44,7 +44,7 @@
           src="{{ url_for('users.image',{'id':user.id,'imageId':manifestImage.id})|escape('html_attr') }}">
           <sup class="text-end m-1">[{{manifestImage.id}}]</sup>
         <textarea data-confirm="image_{{manifestImage.id}}_confirm"
-          name="image_{{ user.id ~ '_' ~ manifestImage.id }}_solution" class="form-control"
+          name="image_{{ user.id ~ '_' ~ manifestImage.id }}" class="form-control"
           placeholder="Rozwiązanie"></textarea>
       </div>
       {% endif %}

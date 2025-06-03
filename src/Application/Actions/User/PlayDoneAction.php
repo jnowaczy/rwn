@@ -14,8 +14,18 @@ class PlayDoneAction extends UserAction
         $user = $this->userRepository->findUserOfId($id);
         $this->logger->info("User $id - done");
 
+        if($user->getUserSolution()){
+            return $this->respondWithData(['class'=>'danger','msg'=>'Błąd: dokument został już wcześniej przesłany.']);
+        }
+
+        $data=[];
+        foreach($this->getFormData() as $key=>$value){
+            $key=str_replace("_$id",'',$key);
+            $data[$key]=trim((string)$value);
+        }
+        $user->saveUserSolution($data);
+
         return $this->respondWithData(['class'=>'success','msg'=>'Dokument został pomyślnie przesłany. Dziękujemy.']);
-        return $this->respondWithData(['class'=>'danger','msg'=>'Błąd: dokument został już wcześniej przesłany.']);
 
     }
 

@@ -20,7 +20,7 @@
           <td>{{loop.index}}</td>
           <td>{{other}}</td>
           <td>
-            <input type="number" min="0" name="other_{{loop.index}}"
+            <input type="number" step="0.25" name="other_{{loop.index}}"
               value="{{user.score['other_' ~ loop.index]|default('')}}" autocomplete="off">
           </td>
         </tr>
@@ -35,7 +35,7 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Poprawny fragment opisu trasy</th>
+          <th scope="col">Fragment opisu trasy</th>
           <th scope="col">Punkty za opis</th>
         </tr>
       </thead>
@@ -47,9 +47,12 @@
         {% if chunk.type != 'text' %}
         <tr>
           <td>{{chunk.id}}</td>
-          <td>{{chunk.text}}</td>
           <td>
-            <input type="number" min="0" name="manifest_{{chunk.id}}"
+            <div><i class="text-success">Poprawny:</i> {{chunk.text}}</div>
+            <div><i class="text-danger">Przesłany:</i> {{userSolution['manifest_' ~ chunk.id]|default('')}}</div>
+          </td>
+          <td>
+            <input type="number" step="0.25" min="0" name="manifest_{{chunk.id}}"
               value="{{user.score['manifest_' ~ chunk.id]|default('')}}" autocomplete="off">
           </td>
         </tr>
@@ -65,7 +68,7 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Poprawny opis foto-zagadki</th>
+          <th scope="col">Opis foto-zagadki</th>
           <th scope="col">Punkty za foto-zagadkę</th>
         </tr>
       </thead>
@@ -75,9 +78,11 @@
         {% if manifestImage.src|default(false) %}
         <tr>
           <td>{{manifestImage.id}}</td>
-          <td>{{manifestImage.solution}}</td>
           <td>
-            <input type="number" min="0" name="image_{{manifestImage.id}}"
+            <div><i class="text-success">Poprawny:</i> {{manifestImage.solution}}</div>
+            <div><i class="text-danger">Przesłany:</i> {{userSolution['image_' ~ manifestImage.id]|default('')}}</div>
+          <td>
+            <input type="number" min="0" step="0.25" name="image_{{manifestImage.id}}"
               value="{{user.score['image_' ~ manifestImage.id]|default('')}}" autocomplete="off">
           </td>
         </tr>

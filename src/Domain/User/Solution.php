@@ -7,7 +7,7 @@ namespace App\Domain\User;
 use JsonSerializable;
 use Psr\Http\Message\UploadedFileInterface;
 
-class User implements JsonSerializable
+class Solution implements JsonSerializable
 {
     protected string $id;
     protected string $dataFilePath;
@@ -175,22 +175,5 @@ class User implements JsonSerializable
             'name' => $this->getName(),
             'dataPath' => $this->dataPath,
         ];
-    }
-
-
-    public function getUserSolution():array{
-        $dataFilePath = $this->dataPath . DIRECTORY_SEPARATOR . 'solution.json';
-        if(!is_file($dataFilePath)){
-            return [];
-        }
-        $data=file_get_contents($dataFilePath);
-        return json_decode($data, true, JSON_THROW_ON_ERROR);
-    }
-
-    public function saveUserSolution(array $data):void{
-        $dataFilePath = $this->dataPath . DIRECTORY_SEPARATOR . 'solution.json';
-        $contents = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
-
-        file_put_contents($dataFilePath, $contents);
     }
 }

@@ -33,6 +33,6 @@ class ScoreUserAction extends AdminUserAction
             return $this->respondWithRedirect('admin.users.list');
         }
 
-        return $this->respondWithHtml('admin/users.score.html.twig',['user'=>$user]);
+        return $this->respondWithHtml('admin/users.score.html.twig',['user'=>$user,'userSolution'=>$user->getUserSolution()]);
     }
 }
