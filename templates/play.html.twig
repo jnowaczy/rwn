@@ -19,7 +19,7 @@
     <p>
       {% for chunk in user.manifestChunks %}
       {% if chunk.type == 'text' %}
-      {{chunk.text}}
+      {{chunk.text|nl2br}}
       {% else %}
       <input name="manifest_{{user.id ~ '_' ~ chunk.id}}" data-confirm="manifest_{{chunk.id}}_confirm"
         data-autolen="{{ min(25, max(5,chunk.size))}}" onchange="resizeInput(this)" onkeyup="resizeInput(this)"

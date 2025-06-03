@@ -22,8 +22,11 @@
     {% if chunk.type == 'text' %}
     {{chunk.text|nl2br}}
     {% else %}
-        <span style="border:none;border-bottom:dotted black;color:white;white-space: pre-wrap;">{% for i in range(0,min(100,max(3,chunk.size))) %}. {% endfor %}</span>
-    <sup>[{{chunk.id}}]</sup>
+        <span class="text-end" style="border:none;border-bottom:2px dotted;display:inline-block;width:{{ 4 + min(40,max(5,0.8 * chunk.size))}}rem"><sup>[{{chunk.id}}]</sup></span>
+      <!--
+         <span style="border:none;border-bottom:dotted black;color:white;white-space: pre-wrap;">{% for i in range(0,min(100,max(3,chunk.size))) %}. .{% endfor %}</span><sup>[{{chunk.id}}]</sup>
+       -->  
+    
     {% endif %}
     {% endfor %}
   </p>
@@ -43,8 +46,8 @@
       <img class="rounded" style="width:6.5cm;"
       src="{{ url_for('users.image',{'id':user.id,'imageId':manifestImage.id})|escape('html_attr') }}">
       
-        <div style="clear:both;border-bottom:dotted" class="text-end">[{{manifestImage.id}}]</div>
-        <div style="clear:both;border-bottom:dotted">&nbsp;</div>
+      <div style="clear:both;border-bottom:2px dotted">&nbsp;</div>
+      <div style="clear:both;border-bottom:2px dotted" class="text-end"><sup>[{{manifestImage.id}}]</sup></div>
          
       </div>
     {% endif %}
@@ -78,7 +81,7 @@
     break-before: page;
 }
 :root{
-  --bs-body-line-height:2.0;
+  --bs-body-line-height:1.8;
 }
 </style>
 {% endblock %}

@@ -153,7 +153,7 @@ class User implements JsonSerializable
                         'text' => $current
                     ];
                     if ($chunk['type'] == 'solution') {
-                        $chunk['size'] = max(5, mb_strlen($current));
+                        $chunk['size'] = max(5, mb_strlen($current), trim($current)==''?40:0);
                         $chunk['id'] = $num++;
                     }
                     $output[] = $chunk;
