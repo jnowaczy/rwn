@@ -5,6 +5,7 @@
 
 {% if 'text' in print|default(['text','foto']) %}
 <div class="pageContainer">
+  <button style="top:-1cm;right:0;position:absolute" class="btn btn-primary" onclick="this.style.display='none';window.print();window.close()">Drukuj</button>
   <h3>Hej {{ user.name }}!</h3>
   <p>{{ user.sectionName }}</p> 
   <p class="mb-3 pb-3">
@@ -62,6 +63,9 @@
 {{ parent() }}
 
 <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+
+
+
 <style>
 @page {
   size: A4;
@@ -83,4 +87,5 @@
   --bs-body-line-height:1.8;
 }
 </style>
+
 {% endblock %}
