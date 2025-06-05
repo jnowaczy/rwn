@@ -21,8 +21,8 @@ class PrintAction extends UserAction
 
         $qrLink=$baseUrl.$this->urlFor('users.play', ['id'=>$id]);
         $qrCode=(new QRCode())->render($qrLink);
-        
-        return $this->respondWithHtml('print.html.twig', ['user' => $user,'qrCode'=>$qrCode]);
+        $title=trim($user->getName().' '.$user->getSection());
+        return $this->respondWithHtml('print.html.twig', ['user' => $user,'qrCode'=>$qrCode,'title'=>$title]);
     }
 
 
