@@ -5,7 +5,7 @@
 <div class="container" id="play">
   <form id="solutionForm">
     <h3>Hej {{ user.name }}!</h3>
-    {% if user.section %}<p>Etap: {{ user.section }}</p>{% endif %} 
+    <p>{{ user.sectionName }}</p> 
     <p>
       {{ commonData.manifestHeader|nl2br}}
     </p>

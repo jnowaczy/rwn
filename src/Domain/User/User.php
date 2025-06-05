@@ -68,6 +68,12 @@ class User implements JsonSerializable
         return $this->getData()['section'] ?? '';
     }
 
+    public function getSectionName(): string
+    {
+        $section=preg_replace('#\D*(\d+).*?$#','$1',$this->getSection());
+        return in_array($section,['','1']) ? '' : "Etap $section";
+    }
+
     public function getStatus(): string
     {
         return $this->getData()['status'] ?? 'opis w przygotowaniu';

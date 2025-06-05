@@ -6,7 +6,7 @@
 {% if 'text' in print|default(['text','foto']) %}
 <div class="pageContainer">
   <h3>Hej {{ user.name }}!</h3>
-  {% if user.section %}<p>Etap: {{ user.section }}</p>{% endif %} 
+  <p>{{ user.sectionName }}</p> 
   <p class="mb-3 pb-3">
     <img style="width: 3cm; height: 3cm;float:inline-end;border:0.05cm solid black" src="{{ qrCode|escape('html_attr') }}">
 
@@ -72,7 +72,7 @@
 @page {
   @bottom-center {
     color:#888;
-    content: "{{ user.name }} - strona " counter(page);
+    content: " {{ user.name }} - Strona " counter(page) " - {{ user.sectionName }}";
   }
 }
 
