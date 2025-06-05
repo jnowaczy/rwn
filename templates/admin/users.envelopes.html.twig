@@ -1,0 +1,43 @@
+{% extends "layout/base.html.twig" %}
+{% block top %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-center">
+
+  {% for item in list %}
+
+  <div style="border:1px dashed #ddd;break-inside: avoid;">
+    <div class="m-2 p-1 px-4" style="border:3px solid black">
+      <h1>{{ commonData.title }}</h1>
+      <h2>{{ item.name }}</h2>
+      <div class="text-end">{{ item.sectionName }}</div>
+    </div>
+  </div>
+
+  {% endfor %}
+
+</div>
+{% endblock %}
+
+
+{% block head %}
+{{ parent() }}
+
+<script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+
+
+
+<style>
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+
+  :root {
+    --bs-body-line-height: 1.8;
+  }
+</style>
+
+{% endblock %}
