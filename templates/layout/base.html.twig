@@ -24,6 +24,8 @@
         {% if adminUser %}
         <span style="float:right">
             |
+            <a href="{{ url_for('admin.dashboard') }}" class="text-dark">Panel</a>
+            |
             <a href="{{ url_for('admin.users.list') }}" class="text-dark">Lista drużyn</a>
             |
             <a href="{{ url_for('admin.commonData') }}" class="text-dark">Ustawienia</a>

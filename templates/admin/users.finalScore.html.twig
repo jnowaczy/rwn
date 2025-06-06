@@ -1,0 +1,36 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+<div class="container">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Drużyna</th>
+        <th>Etapy</th>
+        <th>Zadania inne</th>
+        <th>Liczba</th>
+        <th>Trasa</th>
+        <th>Liczba</th>
+        <th>Foto</th>
+        <th>Liczba</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for teamName,score in finalScore %}
+      <tr>
+        <td>{{ teamName }}</td>
+        <td>{{ score.sections }}</td>
+        <td>{{ score.other.points|default('Nie oceniono') }}</td>
+        <td>{{ score.other.count|default('') }}</td>
+        <td>{{ score.manifest.points|default('Nie oceniono') }}</td>
+        <td>{{ score.manifest.count|default('') }}</td>
+        <td>{{ score.image.points|default('Nie oceniono') }}</td>
+        <td>{{ score.image.count|default('') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

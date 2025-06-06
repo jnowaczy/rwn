@@ -13,12 +13,13 @@ use App\Application\Actions\Admin\AdminLoginAction;
 use App\Application\Actions\Admin\AdminLogoutAction;
 use App\Application\Actions\Admin\User\EditUserAction;
 use App\Application\Actions\Admin\AdminDashboardAction;
+use App\Application\Actions\Admin\User\EnvelopesAction;
 use App\Application\Actions\Admin\User\ListUsersAction;
 use App\Application\Actions\Admin\User\ScoreUserAction;
 use App\Application\Actions\Admin\User\WriteUserAction;
 use App\Application\Actions\Admin\AdminCommonDataAction;
 use App\Application\Actions\Admin\User\DeleteUserAction;
-use App\Application\Actions\Admin\User\EnvelopesAction;
+use App\Application\Actions\Admin\User\ScoreFinalAction;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
@@ -47,6 +48,7 @@ return function (App $app) {
         $group->group('/users', function (Group $group) {
             $group->get('', ListUsersAction::class)->setName('admin.users.list');
             $group->get('/envelopes', EnvelopesAction::class)->setName('admin.users.envelopes');
+            $group->get('/finalScore', ScoreFinalAction::class)->setName('admin.users.finalScore');
             $group->get('/{id}/edit', EditUserAction::class)->setName('admin.users.edit');
             $group->post('/{id}/edit', WriteUserAction::class)->setName('admin.users.write');
             $group->map(['GET','POST'],'/{id}/score', ScoreUserAction::class)->setName('admin.users.score');
